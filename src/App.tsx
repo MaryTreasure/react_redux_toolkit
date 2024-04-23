@@ -1,25 +1,59 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { ChangeEvent, ReactNode, useState } from "react";
+import "./App.css";
+import { Button, Checkbox, CheckboxProps, Input, List } from "antd";
+import { CloseOutlined } from '@ant-design/icons';
+
+interface ITodos {
+  id: number;
+  text: string;
+  completed: boolean;
+}
+
+let todoId = 1;
 
 function App() {
+  const [todos, setTodos] = useState<ITodos[]>([]);
+  const [text, setText] = useState("");
+
+  const addTodo = () => {
+    if (text.trim().length) {
+      setTodos([
+        ...todos,
+        {
+          id: ++todoId,
+          text,
+          completed: false,
+        },
+      ]);
+      setText("");
+    }
+  };
+
+  const textHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setText(e.target.value);
+    console.log(text);
+  };
+
+  const onChange: CheckboxProps["onChange"] = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Input value={text} placeholder="Enter the text" onChange={textHandler} />
+      <Button onClick={addTodo}>Add Todo</Button>
+
+      <List
+        dataSource={todos}
+        renderItem={(item) => (
+          <div style={{display: 'flex', gap: '10px'}}>
+            <List.Item>{item.text}</List.Item>{" "}
+            <Checkbox onChange={onChange}></Checkbox>
+            <Button type="text" icon={<CloseOutlined />}></Button>
+          </div>
+        )}
+      />
+    </>
   );
 }
 
