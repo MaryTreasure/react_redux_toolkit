@@ -1,7 +1,7 @@
-import React, { ChangeEvent, ReactNode, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import "./App.css";
 import { Button, Checkbox, CheckboxProps, Input, List } from "antd";
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined } from "@ant-design/icons";
 
 interface ITodos {
   id: number;
@@ -29,6 +29,10 @@ function App() {
     }
   };
 
+  const removeTodo = (id: number) => {
+    setTodos(todos.filter((item) => item.id !== id));
+  };
+
   const textHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
     console.log(text);
@@ -46,10 +50,14 @@ function App() {
       <List
         dataSource={todos}
         renderItem={(item) => (
-          <div style={{display: 'flex', gap: '10px'}}>
-            <List.Item>{item.text}</List.Item>{" "}
+          <div style={{ display: "flex", gap: "10px" }}>
             <Checkbox onChange={onChange}></Checkbox>
-            <Button type="text" icon={<CloseOutlined />}></Button>
+            <List.Item>{item.text}</List.Item>{" "}
+            <Button
+              type="text"
+              onClick={() => removeTodo(item.id)}
+              icon={<CloseOutlined />}
+            ></Button>
           </div>
         )}
       />
