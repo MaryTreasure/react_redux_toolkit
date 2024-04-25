@@ -7,7 +7,7 @@ interface IInputFieldProps {
 
 }
 
-const InputField: FC<IInputFieldProps> = ({textHandler, text}) => {
+const InputField: FC<IInputFieldProps> = ({textHandler, text}): JSX.Element => {
   return (
     <Input value={text} placeholder="Enter the text" onChange={textHandler} />
   )
