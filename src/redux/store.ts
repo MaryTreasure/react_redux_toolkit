@@ -4,10 +4,15 @@ import todoReducer from './slices/todo-slice'
 
 
 
-export default configureStore({
+ const store = configureStore({
     reducer: {
         todos: todoReducer,
     }
 });
 
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
