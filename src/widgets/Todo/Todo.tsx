@@ -36,7 +36,7 @@ const Todo = () => {
   };
   return (
     <>
-      <InputField textHandler={textHandler} text={text} addTodo={addTodo} />
+      <InputField textHandler={textHandler} text={text} />
       <TodoList onChange={onChange} removeTodo={removeTodo} />
     </>
   );
