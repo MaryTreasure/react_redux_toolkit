@@ -1,6 +1,8 @@
 import React, { ChangeEvent, useState } from "react";
 import InputField from "../../features/InputField/InputField";
 import TodoList from "../../features/TodoList/TodoList";
+import { useAppDispatch } from "../../redux/hooks";
+import { addTodo } from "../../redux/slices/todo-slice";
 
 export interface ITodos {
   id: number;
@@ -8,15 +10,15 @@ export interface ITodos {
   completed: boolean;
 }
 
-let todoId = 1;
 
 const Todo = () => {
   const [text, setText] = useState("");
+  const dispatch = useAppDispatch();
 
+  const addTask = () => {dispatch(addTodo(text));
+    setText('')
+  }
 
-  const removeTodo = (id: number) => {
-    /* setTodos(todos.filter((item) => item.id !== id)); */
-  };
 
   const textHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -36,8 +38,8 @@ const Todo = () => {
   };
   return (
     <>
-      <InputField textHandler={textHandler} text={text} />
-      <TodoList onChange={onChange} removeTodo={removeTodo} />
+      <InputField textHandler={textHandler} text={text} handleSubmit={addTask}/>
+      <TodoList onChange={onChange} />
     </>
   );
 };
