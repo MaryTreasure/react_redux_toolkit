@@ -6,13 +6,12 @@ import { useAppDispatch } from "../../redux/hooks";
 import { removeTodo, toggleTodoComplete } from "../../redux/slices/todo-slice";
 
 interface IListItemProps {
+  id: string
   item: ITodos;
-  onChange: (id: number) => void;
 }
 
 const ListItem: FC<IListItemProps> = ({
-  item,
-  onChange,
+  item, id
 }): JSX.Element => {
   const dispatch = useAppDispatch();
   return (

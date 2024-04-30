@@ -5,7 +5,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { addTodo } from "../../redux/slices/todo-slice";
 
 export interface ITodos {
-  id: number;
+  id: string;
   text: string;
   completed: boolean;
 }
@@ -25,21 +25,10 @@ const Todo = () => {
     console.log(text);
   };
 
-  const onChange = (id: number) => {
-    /* setTodos(
-      todos.map((todo) => {
-        if (todo.id !== id) return todo;
-        return {
-          ...todo,
-          completed: !todo.completed,
-        };
-      })
-    ); */
-  };
   return (
     <>
       <InputField textHandler={textHandler} text={text} handleSubmit={addTask}/>
-      <TodoList onChange={onChange} />
+      <TodoList />
     </>
   );
 };
