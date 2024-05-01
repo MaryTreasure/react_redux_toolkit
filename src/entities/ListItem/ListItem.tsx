@@ -17,7 +17,7 @@ const ListItem: FC<IListItemProps> = ({
   return (
     <>
       <Checkbox onChange={() => dispatch(toggleTodoComplete(id))} checked={item.completed} />
-      <List.Item>{item.text}</List.Item>{" "}
+      <List.Item>{item.title}</List.Item>{" "}
       <Button
         type="text"
         onClick={() => dispatch(removeTodo(id))}

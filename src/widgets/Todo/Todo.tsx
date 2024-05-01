@@ -1,12 +1,12 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import InputField from "../../features/InputField/InputField";
 import TodoList from "../../features/TodoList/TodoList";
 import { useAppDispatch } from "../../redux/hooks";
-import { addTodo } from "../../redux/slices/todo-slice";
+import { addTodo, fetchTodos } from "../../redux/slices/todo-slice";
 
 export interface ITodos {
   id: string;
-  text: string;
+  title: string;
   completed: boolean;
 }
 
@@ -24,6 +24,10 @@ const Todo = () => {
     setText(e.target.value);
     console.log(text);
   };
+
+  useEffect(() => {
+    dispatch(fetchTodos());
+  }, [dispatch])
 
   return (
     <>
