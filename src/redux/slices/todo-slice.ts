@@ -3,24 +3,30 @@ import { ITodos } from "../../widgets/Todo/Todo";
 
 export interface ITodosInitialState {
   list: ITodos[];
-  status: null | string;
+  loading: boolean;
   error: null | string;
 }
 
 const initialState: ITodosInitialState = {
   list: [],
-  status: null,
+  loading: false,
   error: null,
 };
 
-export const fetchTodos = createAsyncThunk(
-  "todos/fetchTodos",
-  async function () {
-    const response = await fetch("https://jsonplaceholder.typicode.com/todos?_limit=10");
-    const data = await response.json();
-    return data;
+export const fetchTodos = createAsyncThunk<
+  ITodos[],
+  undefined,
+  { rejectValue: string }
+>("todos/fetchTodos", async function (_, { rejectWithValue }) {
+  const response = await fetch(
+    "https://jsonplaceholder.typicode.com/todos?_limit=10"
+  );
+  if (!response.ok) {
+    return rejectWithValue("Server Error");
   }
-);
+  const data = await response.json();
+  return data;
+});
 
 const todoSlice = createSlice({
   name: "todos",
@@ -43,16 +49,16 @@ const todoSlice = createSlice({
       }
     },
   },
-  extraReducers: {
-    [fetchTodos.pending]: (state) => {
-      state.status = 'loading';
-      state.error = null;
-    },
-    [fetchTodos.fulfilled]: (state, action) => {
-      state.status = 'resolved';
-      state.list = action.payload;
-    },
-    [fetchTodos.rejected]: (state, action) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTodos.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchTodos.fulfilled, (state, action) => {
+        state.list = action.payload;
+        state.loading = false;
+      });
   },
 });
 
