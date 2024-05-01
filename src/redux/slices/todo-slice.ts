@@ -58,7 +58,11 @@ const todoSlice = createSlice({
       .addCase(fetchTodos.fulfilled, (state, action) => {
         state.list = action.payload;
         state.loading = false;
-      });
+      })
+      .addCase(fetchTodos.rejected, (state) => {
+        state.loading = false;
+        state.error = 'Error';
+      })
   },
 });
 
