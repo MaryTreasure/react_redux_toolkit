@@ -28,6 +28,26 @@ export const fetchTodos = createAsyncThunk<
   return data;
 });
 
+export const deleteTodo = createAsyncThunk(
+  'todos/deleteTodo',
+  async function (id, {rejectWithValue, dispatch}) {
+    try {
+      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+        method: 'DELETE'
+      });
+      if(!response.ok) {
+        throw new Error('Can\'t delete task. Server error')
+      }
+      dispatch(removeTodo(id));
+      
+    } catch (error) {
+      return rejectWithValue('Error')
+      
+    }
+    
+  }
+)
+
 const todoSlice = createSlice({
   name: "todos",
   initialState,
