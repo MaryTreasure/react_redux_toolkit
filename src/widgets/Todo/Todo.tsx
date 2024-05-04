@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import InputField from "../../features/InputField/InputField";
 import TodoList from "../../features/TodoList/TodoList";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addTodo, fetchTodos } from "../../redux/slices/todo-slice";
 
 export interface ITodos {
@@ -13,6 +13,7 @@ export interface ITodos {
 
 const Todo = () => {
   const [text, setText] = useState("");
+  const {error, loading} = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
 
   const addTask = () => {dispatch(addTodo(text));
@@ -32,6 +33,8 @@ const Todo = () => {
   return (
     <>
       <InputField textHandler={textHandler} text={text} handleSubmit={addTask}/>
+      {loading && <h2>Loading...</h2>}
+      {error && <h2>{error}</h2>}
       <TodoList />
     </>
   );
