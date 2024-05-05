@@ -29,24 +29,51 @@ export const fetchTodos = createAsyncThunk<
 });
 
 export const deleteTodo = createAsyncThunk(
-  'todos/deleteTodo',
-  async function (id, {rejectWithValue, dispatch}) {
+  "todos/deleteTodo",
+  async function (id, { rejectWithValue, dispatch }) {
     try {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-        method: 'DELETE'
-      });
-      if(!response.ok) {
-        throw new Error('Can\'t delete task. Server error')
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Can't delete task. Server error");
       }
       dispatch(removeTodo(id));
-      
     } catch (error) {
-      return rejectWithValue('Error')
-      
+      return rejectWithValue("Error");
     }
-    
   }
-)
+);
+
+export const toggleStatus = createAsyncThunk(
+  "todos/toggleStatus",
+  async function (id, { rejectWithValue, dispatch, getState }) {
+    const todo = getState().todos.list.find((todo) => todo.id === id);
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/todos/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            completed: !todo.completed,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Can't toggle task. Server error");
+      }
+      const data = await response.json();
+    } catch (error) {
+      return rejectWithValue("Error");
+    }
+  }
+);
 
 const todoSlice = createSlice({
   name: "todos",
@@ -81,8 +108,8 @@ const todoSlice = createSlice({
       })
       .addCase(fetchTodos.rejected, (state) => {
         state.loading = false;
-        state.error = 'Error';
-      })
+        state.error = "Error";
+      });
   },
 });
 

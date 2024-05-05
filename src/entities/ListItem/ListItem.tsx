@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import { CloseOutlined } from "@ant-design/icons";
 import { ITodos } from "../../widgets/Todo/Todo";
 import { useAppDispatch } from "../../redux/hooks";
-import { removeTodo, toggleTodoComplete } from "../../redux/slices/todo-slice";
+import { deleteTodo, toggleStatus } from "../../redux/slices/todo-slice";
 
 interface IListItemProps {
   id: string
@@ -16,11 +16,11 @@ const ListItem: FC<IListItemProps> = ({
   const dispatch = useAppDispatch();
   return (
     <>
-      <Checkbox onChange={() => dispatch(toggleTodoComplete(id))} checked={item.completed} />
+      <Checkbox onChange={() => dispatch(toggleStatus(id))} checked={item.completed} />
       <List.Item>{item.title}</List.Item>{" "}
       <Button
         type="text"
-        onClick={() => dispatch(removeTodo(id))}
+        onClick={() => dispatch(deleteTodo(id))}
         icon={<CloseOutlined />}
       />
     </>
