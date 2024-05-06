@@ -16,8 +16,11 @@ const Todo = () => {
   const {error, loading} = useAppSelector(state => state.todos);
   const dispatch = useAppDispatch();
 
-  const addTask = () => {dispatch(addNewTodo(text));
-    setText('')
+  const addTask = () => {
+    if(text.trim().length) {
+      dispatch(addNewTodo(text));
+      setText('');
+    }
   }
 
 
